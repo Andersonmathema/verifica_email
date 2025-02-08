@@ -3,13 +3,19 @@ import pandas as pd
 import pygsheets
 from dotenv import load_dotenv
 from datetime import date
+import json
 import os
 
 load_dotenv()
 
-credenciais = pygsheets.authorize(service_file=os.getcwd() + "/cred.json")
+# Carregar credenciais do st.secrets
+creds_dict = json.loads(st.secrets["google_sheets"])
 
-meu_arquivo_GS = os.getenv('GS')
+# Autenticar com Google Sheets
+credenciais = pygsheets.authorize(service_account_info=creds_dict)
+
+meu_arquivo_GS = st.secrets["google_sheets"]["GS"]
+
 arquivo = credenciais.open_by_url(meu_arquivo_GS)
 
 abas = {
