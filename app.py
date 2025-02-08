@@ -1,26 +1,46 @@
 import streamlit as st
 import pandas as pd
 import pygsheets
-from dotenv import load_dotenv
 from datetime import date
 import json
-import os
+from google.oauth2 import service_account  # 🔥 Import necessário para autenticação correta
 
-load_dotenv()
+# 🔍 Carregar os valores direto do Streamlit Cloud
+secrets = st.secrets  # **Não precisa mais verificar se está rodando localmente**
 
-# Carregar o link da planilha do Google Sheets
-meu_arquivo_GS = st.secrets["google_sheets"]["spreadsheet_url"]
+# Carregar URL da planilha
+meu_arquivo_GS = secrets["google_sheets"]["spreadsheet_url"]
 
-# Carregar as credenciais de autenticação do Google Sheets
-creds_dict = st.secrets["google_sheets_credentials"]
+# Garantir que as credenciais sejam carregadas corretamente
+creds_dict = json.loads(json.dumps(secrets["google_sheets_credentials"]))  # 🔥 Converte para dicionário, se necessário
 
-# Autenticar com Google Sheets
-credenciais = pygsheets.authorize(service_account_info=creds_dict)
+# 🔥 Definir os escopos necessários
+SCOPES = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
 
-# Acessar a planilha pelo link armazenado no secrets
-arquivo = credenciais.open_by_url(meu_arquivo_GS)
+# Criar credenciais do Google com os escopos necessários
+credentials = service_account.Credentials.from_service_account_info(creds_dict, scopes=SCOPES)
 
-st.success("Conexão com Google Sheets realizada com sucesso!")
+# 🔗 Autenticar com `pygsheets`
+gc = pygsheets.authorize(custom_credentials=credentials)  # **Força o uso correto das credenciais**
+arquivo = gc.open_by_url(meu_arquivo_GS)  # **Abre a planilha no Google Sheets**
+
+st.success("✅ Conexão com Google Sheets realizada com sucesso!")
+
+# load_dotenv()
+
+# # Carregar o link da planilha do Google Sheets
+# meu_arquivo_GS = st.secrets["google_sheets"]["spreadsheet_url"]
+
+# # Carregar as credenciais de autenticação do Google Sheets
+# creds_dict = st.secrets["google_sheets_credentials"]
+
+# # Autenticar com Google Sheets
+# credenciais = pygsheets.authorize(service_account_info=creds_dict)
+
+# # Acessar a planilha pelo link armazenado no secrets
+# arquivo = credenciais.open_by_url(meu_arquivo_GS)
+
+# st.success("Conexão com Google Sheets realizada com sucesso!")
 
 abas = {
     "Nenhum": arquivo.worksheet_by_title('Vazio'),
