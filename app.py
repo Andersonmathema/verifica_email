@@ -8,11 +8,13 @@ from google.oauth2 import service_account  # 🔥 Import necessário para autent
 # 🔍 Carregar os valores direto do Streamlit Cloud
 secrets = st.secrets  # **Não precisa mais verificar se está rodando localmente**
 
-# Carregar URL da planilha
-meu_arquivo_GS = secrets["google_sheets"]["spreadsheet_url"]
-
-# Garantir que as credenciais sejam carregadas corretamente
-creds_dict = json.loads(json.dumps(secrets["google_sheets_credentials"]))  # 🔥 Converte para dicionário, se necessário
+try:
+    meu_arquivo_GS = st.secrets["google_sheets"]["spreadsheet_url"]
+    creds_dict = st.secrets["google_sheets_credentials"]
+    st.write("✅ Secrets carregados corretamente!")
+except KeyError as e:
+    st.error(f"Erro: Chave não encontrada no st.secrets - {e}")
+    st.stop()  # Para o Streamlit se os secrets estiverem errados
 
 # 🔥 Definir os escopos necessários
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
