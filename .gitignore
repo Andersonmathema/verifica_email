@@ -2,3 +2,5 @@ venv
 .venv
 .env
 cred.json
+.streamlit/secrets.toml
+
