@@ -14,7 +14,15 @@ creds_dict = json.loads(st.secrets["google_sheets"])
 # Autenticar com Google Sheets
 credenciais = pygsheets.authorize(service_account_info=creds_dict)
 
-meu_arquivo_GS = st.secrets["google_sheets"]["GS"]
+# Testar carregamento do secrets
+try:
+    meu_arquivo_GS = st.secrets["google_sheets"]["GS"]
+    st.write("🔗 Link da planilha carregado:", meu_arquivo_GS)
+except KeyError as e:
+    st.error(f"Erro: Chave não encontrada em st.secrets - {e}")
+    st.stop()
+
+#meu_arquivo_GS = st.secrets["google_sheets"]["GS"]
 
 arquivo = credenciais.open_by_url(meu_arquivo_GS)
 
