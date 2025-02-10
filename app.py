@@ -5,6 +5,19 @@ from datetime import date
 from google.oauth2 import service_account  # 🔥 Import necessário para autenticação correta
 
 
+st.write("🚀 Testando acesso aos secrets...")
+
+try:
+    meu_arquivo_GS = st.secrets["google_sheets"]["spreadsheet_url"]
+    creds_dict = dict(st.secrets["google_sheets_credentials"])
+    
+    st.write("✅ `spreadsheet_url` carregado:", meu_arquivo_GS)
+    st.write("✅ Credenciais carregadas com sucesso!")
+    
+except KeyError as e:
+    st.error(f"❌ Erro: A chave {e} não foi encontrada nos `st.secrets`.")
+    st.stop()
+
 # 🔍 Carregar segredos diretamente do Streamlit Cloud ou do ambiente local
 secrets = st.secrets
 
@@ -27,13 +40,13 @@ arquivo = gc.open_by_url(meu_arquivo_GS)  # **Abre a planilha no Google Sheets**
 st.success("✅ Conexão com Google Sheets realizada com sucesso!")
 
 abas = {
-    #"Nenhum": arquivo.worksheet_by_title('Vazio'),
+    "Nenhum": arquivo.worksheet_by_title('Vazio'),
     "2A": arquivo.worksheet_by_title('2A tec'),
-    #"2C": arquivo.worksheet_by_title('2C MEF'),
-    #"3A": arquivo.worksheet_by_title('3A M'),
-    #"3B": arquivo.worksheet_by_title('3B MP'),
-    #"3C": arquivo.worksheet_by_title('3C M'),
-    #"3D": arquivo.worksheet_by_title('3D MP'),
+    "2C": arquivo.worksheet_by_title('2C MEF'),
+    "3A": arquivo.worksheet_by_title('3A M'),
+    "3B": arquivo.worksheet_by_title('3B MP'),
+    "3C": arquivo.worksheet_by_title('3C M'),
+    "3D": arquivo.worksheet_by_title('3D MP'),
 }
 
 st.title("Seu email institucional")
