@@ -26,22 +26,6 @@ arquivo = gc.open_by_url(meu_arquivo_GS)  # **Abre a planilha no Google Sheets**
 
 st.success("✅ Conexão com Google Sheets realizada com sucesso!")
 
-# load_dotenv()
-
-# # Carregar o link da planilha do Google Sheets
-# meu_arquivo_GS = st.secrets["google_sheets"]["spreadsheet_url"]
-
-# # Carregar as credenciais de autenticação do Google Sheets
-# creds_dict = st.secrets["google_sheets_credentials"]
-
-# # Autenticar com Google Sheets
-# credenciais = pygsheets.authorize(service_account_info=creds_dict)
-
-# # Acessar a planilha pelo link armazenado no secrets
-# arquivo = credenciais.open_by_url(meu_arquivo_GS)
-
-# st.success("Conexão com Google Sheets realizada com sucesso!")
-
 abas = {
     "Nenhum": arquivo.worksheet_by_title('Vazio'),
     "2A": arquivo.worksheet_by_title('2A tec'),
