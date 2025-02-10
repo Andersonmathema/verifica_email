@@ -2,8 +2,8 @@ import streamlit as st
 import pandas as pd
 import pygsheets
 from datetime import date
-import json
 from google.oauth2 import service_account  # 🔥 Import necessário para autenticação correta
+
 
 # 🔍 Carregar segredos diretamente do Streamlit Cloud ou do ambiente local
 secrets = st.secrets
@@ -27,13 +27,13 @@ arquivo = gc.open_by_url(meu_arquivo_GS)  # **Abre a planilha no Google Sheets**
 st.success("✅ Conexão com Google Sheets realizada com sucesso!")
 
 abas = {
-    "Nenhum": arquivo.worksheet_by_title('Vazio'),
+    #"Nenhum": arquivo.worksheet_by_title('Vazio'),
     "2A": arquivo.worksheet_by_title('2A tec'),
-    "2C": arquivo.worksheet_by_title('2C MEF'),
-    "3A": arquivo.worksheet_by_title('3A M'),
-    "3B": arquivo.worksheet_by_title('3B MP'),
-    "3C": arquivo.worksheet_by_title('3C M'),
-    "3D": arquivo.worksheet_by_title('3D MP'),
+    #"2C": arquivo.worksheet_by_title('2C MEF'),
+    #"3A": arquivo.worksheet_by_title('3A M'),
+    #"3B": arquivo.worksheet_by_title('3B MP'),
+    #"3C": arquivo.worksheet_by_title('3C M'),
+    #"3D": arquivo.worksheet_by_title('3D MP'),
 }
 
 st.title("Seu email institucional")
@@ -51,7 +51,7 @@ df.columns = df.iloc[0]  # Define a primeira linha como cabeçalho
 df = df[1:].reset_index(drop=True)  # Remove a primeira linha e reseta o índice
 
 # Remover espaços extras dos nomes das colunas
-df.columns = df.columns.str.strip()
+df.columns = df.columns.astype(str).str.strip()
 
 # Verificar se a coluna "Data de Nascimento" existe
 if "Data de Nascimento" in df.columns:
@@ -89,6 +89,8 @@ if nome_filtro and data_nasc_filtro:
 
     else:
         st.error("Nenhum registro encontrado para esse nome e data de nascimento.")
+
+
 
 
 
