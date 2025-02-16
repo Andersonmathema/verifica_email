@@ -2,16 +2,35 @@ import streamlit as st
 import gspread
 from google.oauth2.service_account import Credentials
 import pandas as pd
+import os
+from dotenv import load_dotenv
 
-# 🔑 Autenticação com escopos corretos
-SCOPE = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+# 🔄 Carregar as variáveis do .env
+load_dotenv()
 
-secrets_dict = st.secrets["gcp_service_account"]
-creds = Credentials.from_service_account_info(secrets_dict, scopes=SCOPE)
+SCOPE = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
+
+# 🔑 Criar credenciais a partir do .env
+creds_dict = {
+    "type": os.getenv("GCP_TYPE"),
+    "project_id": os.getenv("GCP_PROJECT_ID"),
+    "private_key_id": os.getenv("GCP_PRIVATE_KEY_ID"),
+    "private_key": os.getenv("GCP_PRIVATE_KEY").replace("\\n", "\n"),  # Converter os \n para quebra de linha real
+    "client_email": os.getenv("GCP_CLIENT_EMAIL"),
+    "client_id": os.getenv("GCP_CLIENT_ID"),
+    "auth_uri": os.getenv("GCP_AUTH_URI"),
+    "token_uri": os.getenv("GCP_TOKEN_URI"),
+    "auth_provider_x509_cert_url": os.getenv("GCP_AUTH_PROVIDER_CERT_URL"),
+    "client_x509_cert_url": os.getenv("GCP_CLIENT_CERT_URL"),
+    "universe_domain": os.getenv("GCP_UNIVERSE_DOMAIN"),
+}
+
+# 📄 Criar credenciais com escopos corretos
+creds = Credentials.from_service_account_info(creds_dict, scopes=SCOPE)
 client = gspread.authorize(creds)
 
-# 📄 Obtém o ID da planilha do secrets
-SPREADSHEET_ID = st.secrets["google_sheets"]["spreadsheet_id"]
+# 📄 ID da planilha
+SPREADSHEET_ID = os.getenv("GOOGLE_SHEETS_ID")
 
 # 🏫 Lista de salas disponíveis
 salas_disponiveis = ["2A_PROC","2A_RED", "2C_MAT", "2C_EF", "3A_MAT","3B_MAT", "3B_PRG", "3C_MAT", "3D_MAT", "3D_PRG"]
@@ -23,7 +42,7 @@ st.title("📚 Consulta de Notas")
 sala_escolhida = st.selectbox("🏫 Escolha sua sala", salas_disponiveis)
 
 # 👤 Inputs para Nome e RA
-nome = st.text_input("👤 Digite seu Nome Completo").upper()
+nome = st.text_input("👤 Digite seu Nome Completo")
 ra = st.text_input("🆔 Digite seu RA (0000'RA'SP)")
 
 if st.button("🔍 Buscar"):
@@ -64,6 +83,7 @@ if st.button("🔍 Buscar"):
     
     else:
         st.error("❌ Por favor, preencha todos os campos.")
+
 
 
 
