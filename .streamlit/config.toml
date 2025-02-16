@@ -1,6 +1,6 @@
 [server]
 headless = true
-port = $PORT
+port = 8501  # Remove a variável $PORT
 enableCORS = false
 enableXsrfProtection = false
 address = "0.0.0.0"
@@ -10,4 +10,5 @@ primaryColor="#bd93f9"
 backgroundColor="#282a36"
 secondaryBackgroundColor="#44475a"
 textColor="#f8f8f2"
+
 
