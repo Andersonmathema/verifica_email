@@ -42,7 +42,7 @@ st.title("📚 Consulta de Notas")
 sala_escolhida = st.selectbox("🏫 Escolha sua sala", salas_disponiveis)
 
 # 👤 Inputs para Nome e RA
-nome = st.text_input("👤 Digite seu Nome Completo")
+nome = st.text_input("👤 Digite seu Nome Completo").upper()
 ra = st.text_input("🆔 Digite seu RA (0000'RA'SP)")
 
 if st.button("🔍 Buscar"):
@@ -83,16 +83,3 @@ if st.button("🔍 Buscar"):
     
     else:
         st.error("❌ Por favor, preencha todos os campos.")
-
-
-
-
-
-
-
-
-
-
-
-
-
