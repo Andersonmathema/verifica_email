@@ -69,7 +69,7 @@ if st.button("🔍 Buscar"):
 
                 # 📋 Transformar os valores em DataFrame
                 dados_filtrados = [celula.value for celula in valores]
-                colunas_desejadas = headers[2:15]  # Pegando os cabeçalhos de C até O
+                colunas_desejadas = headers[2:18]  # Pegando os cabeçalhos de C até O
 
                 df_resultado = pd.DataFrame([dados_filtrados], columns=colunas_desejadas)
 
