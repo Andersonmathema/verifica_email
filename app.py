@@ -63,13 +63,13 @@ if st.button("🔍 Buscar"):
                 # 📌 Pega o número da linha do aluno na planilha (considerando o cabeçalho)
                 linha_aluno = resultado.index[0] + 2  # Índice do DataFrame começa em 0, mas no Google Sheets começa em 2
 
-                # 🔢 Definir intervalo C até O na linha do aluno
-                intervalo = f"C{linha_aluno}:O{linha_aluno}"
+                # 🔢 Definir intervalo C até R na linha do aluno
+                intervalo = f"C{linha_aluno}:R{linha_aluno}"
                 valores = worksheet.range(intervalo)
 
                 # 📋 Transformar os valores em DataFrame
                 dados_filtrados = [celula.value for celula in valores]
-                colunas_desejadas = headers[2:18]  # Pegando os cabeçalhos de C até O
+                colunas_desejadas = headers[2:18]  # Pegando os cabeçalhos de C até R
 
                 df_resultado = pd.DataFrame([dados_filtrados], columns=colunas_desejadas)
 
